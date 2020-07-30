@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="java.util.*" %>
+<%@ page import="java.io.*" %>
 <!DOCTYPE html>
 <html lang="ja">
 	<head>
@@ -10,7 +12,7 @@
 		<script type="text/javascript" src="js/jquery-3.5.1.js"></script>
 		<script type="text/javascript" src="js/bootstrap.js"></script>
 	</head>
-	<header>
+	<header class="stickey-top">
 		<nav class='navbar navbar-expand-lg navbar-dark bg-primary'>
 			<a class='navbar-brand' href='home.jsp'>時間割共有システム</a>
 			<button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarSupportedContent'>
@@ -22,12 +24,38 @@
 					<li class='nav-item'><a class='nav-link' href='/'>ユーザ検索</a></li>
 					<li class='nav-item'><a class='nav-link' href='/'>お気に入り</a></li>
 					<li class='nav-item'><a class='nav-link' href='/'>ログアウト</a></li>
-					<li class='nav-item'><a class='nav-link' href='/'>ログイン</a></li>
+					<li class='nav-item'><a class='nav-link' href='loginUser.jsp'>ログイン</a></li>
 					<li class='nav-item'><a class='nav-link' href='newUser.jsp'>ユーザ登録</a></li>
 				</ul>
 			</div>
 		</nav>
 	</header>
 	<body>
+	<%if (session.getAttribute("error")!=null){%>
+	<div id="error_explanation" class="alert alert-warning mt-3">
+		<ul class="mb-0">
+<%
+	List<String> errors = (List<String>)session.getAttribute("error");
+	session.removeAttribute("error");
+	if (!errors.isEmpty()){
+		for(String error: errors){
+%>
+	<li><%= error%></li>
+		<%}%>
+		</ul>
+	<%}%>
+</div>
+<%} %>
+	<div class='row mt-5'>
+		<div class='offset-sm-3 col-sm-6'>
+			<form action='process_loginUser.jsp' method='post'>
+				<div class='form-group'>
+					メールアドレス <input type='text' class='form-control' name='user_mail' required>
+					パスワード <input type='password' class='form-control mb-4'name='user_password' required>
+					<button type='submit' class='btn btn-primary'>ログイン</button>
+				</div>
+			</form>
+		</div>
+	</div>
 	</body>
 </html>
