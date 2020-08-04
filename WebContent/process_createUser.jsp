@@ -11,6 +11,7 @@
 <%
 byte[] encrypted = null;
 String password_locked=null;
+boolean result ;
 List<String> error = new ArrayList<String>();//エラーの内容を格納する配列
 List<String> success = new ArrayList<String>();//成功したときのメッセージ格納配列
 request.setCharacterEncoding("UTF-8");
@@ -48,9 +49,15 @@ if (!error.isEmpty()){
 %>
 <%
 try{
-	user.userRegister(name,password_locked,mail);
-	success.add("正常に登録しました");
-	session.setAttribute("success", success);
+	result = user.userRegister(name,password_locked,mail);
+	if (result){
+		success.add("正常に登録しました");
+		session.setAttribute("success", success);
+	}else{
+		error.add("そのメールアドレスは既に登録されているようです");
+		session.setAttribute("error", error);
+	}
+
 %>
 <jsp:forward page="view_newUser.jsp" />
 <%

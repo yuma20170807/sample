@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="java.util.*" %>
+<%@ page import="java.io.*" %>
 <!DOCTYPE html>
 <html lang="ja">
 	<head>
@@ -12,7 +14,7 @@
 	</head>
 	<header class="stickey-top">
 		<nav class='navbar navbar-expand-lg navbar-dark bg-primary'>
-			<a class='navbar-brand' href='home.jsp'>時間割共有システム</a>
+			<a class='navbar-brand' href='view_home.jsp'>時間割共有システム</a>
 			<button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarSupportedContent'>
 				<span class='navbar-toggler-icon'></span>
 			</button>
@@ -28,6 +30,20 @@
 			</div>
 		</nav>
 	</header>
-	<body>
+	<body><%if (session.getAttribute("success")!=null){%>
+	<div id="error_explanation" class="alert alert-success mt-3">
+		<ul class="mb-0">
+<%
+	List<String> successes = (List<String>)session.getAttribute("success");
+	session.removeAttribute("success");
+	if (!successes.isEmpty()){
+		for(String success: successes){
+%>
+	<li><%= success%></li>
+		<%}%>
+		</ul>
+	<%}%>
+</div>
+<%} %>
 	</body>
 </html>

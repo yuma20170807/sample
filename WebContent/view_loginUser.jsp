@@ -14,7 +14,7 @@
 	</head>
 	<header class="stickey-top">
 		<nav class='navbar navbar-expand-lg navbar-dark bg-primary'>
-			<a class='navbar-brand' href='home.jsp'>時間割共有システム</a>
+			<a class='navbar-brand' href='view_home.jsp'>時間割共有システム</a>
 			<button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarSupportedContent'>
 				<span class='navbar-toggler-icon'></span>
 			</button>
@@ -24,8 +24,8 @@
 					<li class='nav-item'><a class='nav-link' href='/'>ユーザ検索</a></li>
 					<li class='nav-item'><a class='nav-link' href='/'>お気に入り</a></li>
 					<li class='nav-item'><a class='nav-link' href='/'>ログアウト</a></li>
-					<li class='nav-item'><a class='nav-link' href='loginUser.jsp'>ログイン</a></li>
-					<li class='nav-item'><a class='nav-link' href='newUser.jsp'>ユーザ登録</a></li>
+					<li class='nav-item'><a class='nav-link' href='view_loginUser.jsp'>ログイン</a></li>
+					<li class='nav-item'><a class='nav-link' href='view_newUser.jsp'>ユーザ登録</a></li>
 				</ul>
 			</div>
 		</nav>

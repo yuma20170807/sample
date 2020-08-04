@@ -9,8 +9,6 @@
 <jsp:useBean id="user" scope="session" class="kadai.UserDbaccess"/>
 
 <%
-byte[] encrypted = null;
-String password_locked=null;
 List<String> error = new ArrayList<String>();//エラーの内容を格納する配列
 List<String> success = new ArrayList<String>();//成功したときのメッセージ格納配列
 request.setCharacterEncoding("UTF-8");
@@ -32,17 +30,17 @@ if (!error.isEmpty()){
 %>
 <%
 try{
-	user.userLogin(password_locked,mail);
-	success.add("正常に登録しました");
+	user.userLogin(mail,password);
+	success.add("ログインに成功しました");
 	session.setAttribute("success", success);
 %>
-<jsp:forward page="view_newUser.jsp" />
+<jsp:forward page="view_home.jsp" />
 <%
 } catch(Exception e){
-	error.add("登録できませんでした");
+	error.add("ログインに失敗しました");
 	session.setAttribute("error", error);
 %>
-<jsp:forward page="view_newUser.jsp" />
+<jsp:forward page="view_loginUser.jsp" />
 <%
 }
 %>
