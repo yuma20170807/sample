@@ -1,21 +1,17 @@
 package kadai;
 
 
-import java.security.Key;
 //SQLに関連したクラスライブラリをインポート
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.spec.IvParameterSpec;
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDbaccess {
 	protected int num;
-	protected int  user_id;
+	protected int user_id = -1;
 	protected String user_name;
 	protected String user_password;
 	protected int admin;
@@ -26,12 +22,10 @@ public class UserDbaccess {
 		Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Drive
 		String url="jdbc:mysql://localhost/sample";
 		Connection conn = DriverManager.getConnection(url, "root", "yuma0101");
-		String sql = "select * from sample_table";
+		String sql = "";
 		PreparedStatement stmt =conn.prepareStatement(sql);
 		ResultSet rs = stmt.executeQuery();
 		while(rs.next()) {
-			System.out.println(rs.getInt("id"));
-			System.out.println(rs.getInt("num"));
 		}
 		rs.close();
 		stmt.close();
@@ -73,7 +67,8 @@ public class UserDbaccess {
 
 
 	}
-	public void userLogin(String mail,String password)throws Exception{//ユーザログイン用のメソッド
+	public List<String> userLogin(String mail,String password)throws Exception{//ユーザログイン用のメソッド
+		List<String> result = new ArrayList<String>();
 		Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Drive
 		String url="jdbc:mysql://localhost/share_class";
 		Connection conn = DriverManager.getConnection(url, "root", "yuma0101");
@@ -88,21 +83,29 @@ public class UserDbaccess {
 			admin = rs.getInt("admin");
 			user_mail=rs.getString("user_mail");
 		}
-		byte[] encrypted=user_password.getBytes();
-		System.out.println(encrypted);
-		KeyGenerator kg = KeyGenerator.getInstance("DES");
-		Key key = kg.generateKey();
-		Cipher c = Cipher.getInstance("DES/CBC/PKCS5Padding");
-		byte[] iv = c.getIV();
-		IvParameterSpec dps = new IvParameterSpec(iv);
-		c.init(Cipher.DECRYPT_MODE, key, dps);
-		byte[] output = c.doFinal(encrypted);
-		System.out.println(new String(output));
+		if(user_id == -1){
+		    rs.close();
+			stmt.close();
+			conn.close();
+			return result;
+		}
+		if (user_password.equals(password)){
+		    rs.close();
+			stmt.close();
+			conn.close();
+			result.add(String.valueOf(user_id));
+			result.add(user_name);
+			result.add(user_password);
+			result.add(String.valueOf(admin));
+			result.add(user_mail);
 
-	    rs.close();
-		stmt.close();
-		conn.close();
-
+			return result;
+		}else {
+		    rs.close();
+			stmt.close();
+			conn.close();
+			return result;
+		}
 
 	}
 }

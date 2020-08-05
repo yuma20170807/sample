@@ -2,6 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
 <%@ page import="java.io.*" %>
+<%
+List<String> login_info = (List<String>) session.getAttribute("login_info");
+if (login_info != null) {
+	%>
+	<jsp:forward page="view_home.jsp" />
+	<%}%>
 <!DOCTYPE html>
 <html lang="ja">
 	<head>
@@ -20,32 +26,58 @@
 			</button>
 			<div class='collapse navbar-collapse justify-content-end' id='navbarSupportedContent'>
 				<ul class='navbar-nav'>
-					<li class='nav-item'><a class='nav-link' href='/'>時間割登録</a></li>
-					<li class='nav-item'><a class='nav-link' href='/'>ユーザ検索</a></li>
-					<li class='nav-item'><a class='nav-link' href='/'>お気に入り</a></li>
-					<li class='nav-item'><a class='nav-link' href='/'>ログアウト</a></li>
-					<li class='nav-item'><a class='nav-link' href='view_loginUser.jsp'>ログイン</a></li>
-					<li class='nav-item'><a class='nav-link' href='view_newUser.jsp'>ユーザ登録</a></li>
+					<%if (login_info != null){%>
+						<li class='nav-item'><a class='nav-link' href='/'>時間割登録</a></li>
+						<li class='nav-item'><a class='nav-link' href='/'>ユーザ検索</a></li>
+						<li class='nav-item'><a class='nav-link' href='/'>お気に入り</a></li>
+						<li class='nav-item'><a class='nav-link' href='process_logout.jsp'onclick="return confirm('ログアウトします。よろしいですか？')">ログアウト</a></li>
+						<%if((Integer.parseInt(login_info.get(3))) == 1){
+							%>
+							<li class='nav-item'><a class='nav-link' href='view_openLecture.jsp'>開講科目登録</a></li>
+						<% }%>
+					<% } else{%>
+						<li class='nav-item'><a class='nav-link'href='view_loginUser.jsp'>ログイン</a></li>
+						<li class='nav-item'><a class='nav-link'href='view_newUser.jsp'>ユーザ登録</a></li>
+					<%} %>
 				</ul>
 			</div>
 		</nav>
 	</header>
 	<body>
-	<%if (session.getAttribute("error")!=null){%>
-	<div id="error_explanation" class="alert alert-warning mt-3">
-		<ul class="mb-0">
-<%
-	List<String> errors = (List<String>)session.getAttribute("error");
-	session.removeAttribute("error");
-	if (!errors.isEmpty()){
-		for(String error: errors){
-%>
-	<li><%= error%></li>
+		<%
+		List<String> errors = (List<String>) session.getAttribute("error");
+		if (errors!=null) {
+			%>
+			<div id="error_explanation" class="alert alert-warning mt-3">
+				<ul class="mb-0">
+					<%
+					session.removeAttribute("error");
+					if (!errors.isEmpty()) {
+						for (String error : errors) {
+							%>
+							<li><%=error%></li>
+						<%}%>
+					<%}%>
+				</ul>
+			</div>
+			<%
+		}
+		List<String> successes = (List<String>) session.getAttribute("success");
+		if (successes != null ) {
+			%>
+			<div id="error_explanation" class="alert alert-success mt-3">
+				<ul class="mb-0">
+					<%
+					session.removeAttribute("success");
+					if (!successes.isEmpty()) {
+						for (String success : successes) {
+							%>
+							<li><%=success%></li>
+						<%}%>
+					<%}%>
+				</ul>
+			</div>
 		<%}%>
-		</ul>
-	<%}%>
-</div>
-<%} %>
 	<div class='row mt-5'>
 		<div class='offset-sm-3 col-sm-6'>
 			<form action='process_loginUser.jsp' method='post'>

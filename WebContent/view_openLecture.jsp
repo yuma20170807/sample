@@ -46,37 +46,78 @@ if (login_info == null){
 	<body>
 		<%
 		List<String> errors = (List<String>) session.getAttribute("error");
-			if (errors!=null) {
-				%>
-				<div id="error_explanation" class="alert alert-warning mt-3">
-					<ul class="mb-0">
-						<%
-						session.removeAttribute("error");
-						if (!errors.isEmpty()) {
-							for (String error : errors) {
-								%>
-								<li><%=error%></li>
-							<%}%>
+		if (errors!=null) {
+			%>
+			<div id="error_explanation" class="alert alert-warning mt-3">
+				<ul class="mb-0">
+					<%
+					session.removeAttribute("error");
+					if (!errors.isEmpty()) {
+						for (String error : errors) {
+							%>
+							<li><%=error%></li>
 						<%}%>
-					</ul>
-				</div>
-				<%
-			}
+					<%}%>
+				</ul>
+			</div>
+			<%
+		}
 		List<String> successes = (List<String>) session.getAttribute("success");
-			if (successes != null ) {
-				%>
-				<div id="error_explanation" class="alert alert-success mt-3">
-					<ul class="mb-0">
-						<%
-						session.removeAttribute("success");
-						if (!successes.isEmpty()) {
-							for (String success : successes) {
-								%>
-								<li><%=success%></li>
-							<%}%>
+		if (successes != null ) {
+			%>
+			<div id="error_explanation" class="alert alert-success mt-3">
+				<ul class="mb-0">
+					<%
+					session.removeAttribute("success");
+					if (!successes.isEmpty()) {
+						for (String success : successes) {
+							%>
+							<li><%=success%></li>
 						<%}%>
-					</ul>
-				</div>
-			<%}%>
+					<%}%>
+				</ul>
+			</div>
+		<%}%>
+	<div class="row mt-5">
+		<div class="offset-sm-3 col-sm-6">
+			<form action="process_createLecture.jsp" method="post">
+			講義名<input type="text" class="form-control mb-4" name="lecture_name" required>
+			単位数
+			<SELECT NAME="lecture_credit" class="form-control" required>
+				<OPTION value="">選択してください</OPTION>
+				<OPTION VALUE=1>1</OPTION>
+				<OPTION VALUE=2>2</OPTION>
+			</SELECT><br>
+			曜日
+			<SELECT NAME="lecture_day" class="form-control" required>
+				<OPTION value="">選択してください</OPTION>
+				<OPTION VALUE="月" >月曜日</OPTION>
+				<OPTION VALUE="火" >火曜日</OPTION>
+				<OPTION VALUE="水" >水曜日</OPTION>
+				<OPTION VALUE="木" >木曜日</OPTION>
+				<OPTION VALUE="金" >金曜日</OPTION>
+			</SELECT><br>
+			時限
+			 <SELECT NAME="lecture_time" class="form-control" required>
+				<OPTION value="">選択してください</OPTION>
+				<OPTION VALUE=1 >１時限目</OPTION>
+				<OPTION VALUE=2 >２時限目</OPTION>
+				<OPTION VALUE=3 >３時限目</OPTION>
+				<OPTION VALUE=4 >４時限目</OPTION>
+				<OPTION VALUE=5 >５時限目</OPTION>
+			</SELECT><br>
+			開講年次
+			<SELECT NAME="lecture_target" class="form-control" required>
+				<OPTION value="">選択してください</OPTION>
+				<OPTION VALUE=1 >１年生</OPTION>
+				<OPTION VALUE=2 >２年生</OPTION>
+				<OPTION VALUE=3 >３年生</OPTION>
+				<OPTION VALUE=4 >４年生</OPTION>
+			</SELECT><br>
+			<button type="submit" class="btn btn-primary">登録</button>
+			</form>
+		</div>
+	</div>
 	</body>
+
 </html>

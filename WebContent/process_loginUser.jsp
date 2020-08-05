@@ -2,13 +2,11 @@
     pageEncoding="UTF-8"%>
 <%@page import= "java.util.*" %>
 <%@page import= "java.io.*" %>
-<%@page import="java.security.*" %>
-<%@page import="javax.crypto.*" %>
 <%@page import="java.util.Arrays" %>
-<%@page import="javax.crypto.spec.IvParameterSpec" %>
 <jsp:useBean id="user" scope="session" class="kadai.UserDbaccess"/>
 
 <%
+List<String> result = new ArrayList<String>();
 List<String> error = new ArrayList<String>();//エラーの内容を格納する配列
 List<String> success = new ArrayList<String>();//成功したときのメッセージ格納配列
 request.setCharacterEncoding("UTF-8");
@@ -30,14 +28,23 @@ if (!error.isEmpty()){
 %>
 <%
 try{
-	user.userLogin(mail,password);
-	success.add("ログインに成功しました");
-	session.setAttribute("success", success);
-%>
-<jsp:forward page="view_home.jsp" />
-<%
+	result = user.userLogin(mail,password);
+	if (result.size() != 0){
+		success.add("ログインに成功しました");
+		session.setAttribute("login_info",result);
+		session.setAttribute("success",success);
+		%>
+		<jsp:forward page="view_home.jsp" />
+		<%
+	}else{
+		error.add("メールアドレスもしくはパスワードが間違っています。");
+		session.setAttribute("error", error);
+		%>
+		<jsp:forward page="view_loginUser.jsp" />
+		<%
+	}
 } catch(Exception e){
-	error.add("ログインに失敗しました");
+	error.add("エラー");
 	session.setAttribute("error", error);
 %>
 <jsp:forward page="view_loginUser.jsp" />
