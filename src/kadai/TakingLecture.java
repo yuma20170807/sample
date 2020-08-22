@@ -5,7 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-public class LectureDbaccess {
+
+public class TakingLecture {
 
 	ArrayList<String> id = new ArrayList<String>();
 	ArrayList<String> name = new ArrayList<String>();
@@ -15,7 +16,8 @@ public class LectureDbaccess {
 	ArrayList<String> target = new ArrayList<String>();
 	int num = 0;
 
-	public void dataload(String time, String day) throws Exception {
+
+	public void loadTaking(int user_id) throws Exception{
 		this.id = new ArrayList<String>();
 		this.name = new ArrayList<String>();
 		this.day = new ArrayList<String>();
@@ -26,10 +28,9 @@ public class LectureDbaccess {
 		Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Drive
 		String url = "jdbc:mysql://localhost/share_class";
 		Connection conn = DriverManager.getConnection(url, "root", "yuma0101");
-		String sql = "select * from lectures where lecture_time = ? and lecture_day = ?";
+		String sql = "select lectures.lecture_id,lecture_name,lecture_credit,lecture_day,lecture_time,lecture_target from lectures inner join register_list on lectures.lecture_id=register_list.lecture_id where user_id = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setInt(1, Integer.parseInt(time));
-		stmt.setString(2, day);
+		stmt.setInt(1, user_id);
 		ResultSet rs = stmt.executeQuery();
 		while (rs.next()) {
 			this.id.add(rs.getString("lecture_id"));
@@ -44,84 +45,55 @@ public class LectureDbaccess {
 		stmt.close();
 		conn.close();
 	}
-	public boolean takeLecture(int user_id, int lecture_id) throws Exception{
+
+
+	public int getLecture(String lecture_day, int lecture_time) {
+		for (String name : this.name) {
+			int ind = this.name.indexOf(name);
+			if (this.day.get(ind).equals(lecture_day)) {
+				if(Integer.parseInt(this.time.get(ind)) == lecture_time) {
+					return ind;
+				}
+			}
+		}
+		return 9999999;
+	}
+
+	public void deleteTaking(int user_id, int lecture_id) throws Exception{
 		Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Drive
 		String url = "jdbc:mysql://localhost/share_class";
 		Connection conn = DriverManager.getConnection(url, "root", "yuma0101");
-		String sql = "insert into register_list(user_id,lecture_id) values (?,?)";
+		String sql = "delete from register_list where user_id = ? and lecture_id = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
-		stmt.setInt(1,user_id);
-		stmt.setInt(2,lecture_id);
+		stmt.setInt(1, user_id);
+		stmt.setInt(2, lecture_id);
 		stmt.execute();
 		stmt.close();
 		conn.close();
-		return true;
-
 	}
 
-	public boolean lectureRegister(String lecture_name, int lecture_credit, String lecture_day, int lecture_time,
-			int lecture_target) throws Exception {
-		int num = 0;
-		boolean result = false;
-		Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Drive
-		String url = "jdbc:mysql://localhost/share_class";
-		Connection conn = DriverManager.getConnection(url, "root", "yuma0101");
-		String sql2 = "select * from lectures where lecture_name = ?";
-		PreparedStatement stmt2 = conn.prepareStatement(sql2);
-		stmt2.setString(1, lecture_name);
-		ResultSet rs2 = stmt2.executeQuery();
-		while (rs2.next()) {
-			num += 1;
-		}
-
-		if (num == 0) {
-			String sql = "insert into lectures (lecture_name,lecture_credit,lecture_day,lecture_time,lecture_target)values(?,?,?,?,?)";
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, lecture_name);
-			stmt.setInt(2, lecture_credit);
-			stmt.setString(3, lecture_day);
-			stmt.setInt(4, lecture_time);
-			stmt.setInt(5, lecture_target);
-			stmt.execute();
-			stmt.close();
-			rs2.close();
-			stmt2.close();
-			conn.close();
-			return true;
-		} else {
-			rs2.close();
-			stmt2.close();
-			conn.close();
-			return false;
-		}
-	}
 
 	public String getId(int i) {
 		return id.get(i);
 	}
-
 	public String getName(int i) {
 		return name.get(i);
 	}
-
 	public String getDay(int i) {
 		return day.get(i);
 	}
-
 	public String getTime(int i) {
 		return time.get(i);
 	}
-
 	public String getCredit(int i) {
 		return credit.get(i);
 	}
-
 	public String getTarget(int i) {
 		return target.get(i);
 	}
-
 	public int getNum() {
 		return num;
 	}
+
 
 }

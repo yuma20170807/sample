@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@page import= "java.util.*" %>
-<%@page import= "java.io.*" %>
-<%@page import="java.util.Arrays" %>
-<jsp:useBean id="user" scope="session" class="kadai.UserDbaccess"/>
+	pageEncoding="UTF-8"%>
+<%@page import="java.util.*"%>
+<%@page import="java.io.*"%>
+<%@page import="java.util.Arrays"%>
+<jsp:useBean id="user" scope="session" class="kadai.UserDbaccess" />
 
 <%
 List<String> result = new ArrayList<String>();
@@ -22,8 +22,8 @@ if (!mail.matches(mailFormat)) {//メールアドレスの形式の精査
 if (!error.isEmpty()){
 	session.setAttribute("error", error);
 	%>
-	<jsp:forward page="view_loginUser.jsp" />
-	<%
+<jsp:forward page="view_loginUser.jsp" />
+<%
 }
 %>
 <%
@@ -34,14 +34,14 @@ try{
 		session.setAttribute("login_info",result);
 		session.setAttribute("success",success);
 		%>
-		<jsp:forward page="view_home.jsp" />
-		<%
+<jsp:forward page="view_home.jsp" />
+<%
 	}else{
 		error.add("メールアドレスもしくはパスワードが間違っています。");
 		session.setAttribute("error", error);
 		%>
-		<jsp:forward page="view_loginUser.jsp" />
-		<%
+<jsp:forward page="view_loginUser.jsp" />
+<%
 	}
 } catch(Exception e){
 	error.add("エラー");

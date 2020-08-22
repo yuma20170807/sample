@@ -5,12 +5,13 @@
 <jsp:useBean id="taking" scope="session" class="kadai.TakingLecture" />
 <%
 List<String> login_info = (List<String>) session.getAttribute("login_info");
-
+request.setCharacterEncoding("UTF-8");
+int user_id = Integer.parseInt(request.getParameter("user_id"));
 if (login_info == null){
 	%>
 <jsp:forward page="view_loginUser.jsp" />
 <%}else{
-	taking.loadTaking(Integer.parseInt(login_info.get(0)));
+	taking.loadTaking(user_id);
 }%>
 <!DOCTYPE html>
 <html lang="ja">

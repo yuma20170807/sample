@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@page import= "java.util.*" %>
-<%@page import= "java.io.*" %>
-<%@page import="java.util.Arrays" %>
-<jsp:useBean id="lecture" scope="session" class="kadai.LectureDbaccess"/>
+	pageEncoding="UTF-8"%>
+<%@page import="java.util.*"%>
+<%@page import="java.io.*"%>
+<%@page import="java.util.Arrays"%>
+<jsp:useBean id="lecture" scope="session" class="kadai.LectureDbaccess" />
 
 <%
 boolean result ;
@@ -22,14 +22,14 @@ try{
 		success.add("登録完了");
 		session.setAttribute("success", success);
 		%>
-		<jsp:forward page="view_openLecture.jsp" />
-		<%
+<jsp:forward page="view_openLecture.jsp" />
+<%
 	}else{
 		error.add("その講義名で既に登録されているようです");
 		session.setAttribute("error", error);
 		%>
-		<jsp:forward page="view_openLecture.jsp" />
-		<%
+<jsp:forward page="view_openLecture.jsp" />
+<%
 	}
 }catch(Exception e){
 	error.add("登録できませんでした");

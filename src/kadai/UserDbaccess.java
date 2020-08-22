@@ -10,22 +10,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDbaccess {
-	protected int num;
-	protected int user_id = -1;
-	protected String user_name;
-	protected String user_password;
-	protected int admin;
-	protected String user_mail;
+	int num;
+	ArrayList<Integer> user_id = new ArrayList<Integer>();
+	ArrayList<String> user_name = new ArrayList<String>();
+	ArrayList<String> user_mail = new ArrayList<String>();
+	ArrayList<Integer> admin = new ArrayList<Integer>();
+	ArrayList<Integer> favo_list = new ArrayList<Integer>();
+	String pass;
 
 	public void dataload()throws Exception{
-		num=0;
+		this.user_id = new ArrayList<Integer>();
+		this.user_name = new ArrayList<String>();
+		this.user_mail = new ArrayList<String>();
+		this.admin = new ArrayList<Integer>();
+		this.num=0;
 		Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Drive
-		String url="jdbc:mysql://localhost/sample";
+		String url="jdbc:mysql://localhost/share_class";
 		Connection conn = DriverManager.getConnection(url, "root", "yuma0101");
-		String sql = "";
+		String sql = "select * from users";
 		PreparedStatement stmt =conn.prepareStatement(sql);
 		ResultSet rs = stmt.executeQuery();
 		while(rs.next()) {
+			this.user_id.add(rs.getInt("user_id"));
+			this.user_name.add(rs.getString("user_name"));
+			this.pass = rs.getString("user_password");
+			this.admin.add(rs.getInt("admin"));
+			this.user_mail.add(rs.getString("user_mail"));
+			this.num++;
 		}
 		rs.close();
 		stmt.close();
@@ -67,7 +78,59 @@ public class UserDbaccess {
 
 
 	}
+
+	public void user_favorite(int user_favo_id, int user_favo_to) throws Exception{
+		Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Drive
+		String url="jdbc:mysql://localhost/share_class";
+		Connection conn = DriverManager.getConnection(url, "root", "yuma0101");
+		String sql = "insert into favorite_list(user_favo_id,user_favo_to)values(?,?) ";
+		PreparedStatement stmt =conn.prepareStatement(sql);
+		stmt.setInt(1,user_favo_id);
+		stmt.setInt(2,user_favo_to);
+		stmt.execute();
+		stmt.close();
+		conn.close();
+	}
+
+	public void user_non_favorite(int user_favo_id, int user_favo_to) throws Exception{
+		Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Drive
+		String url="jdbc:mysql://localhost/share_class";
+		Connection conn = DriverManager.getConnection(url, "root", "yuma0101");
+		String sql = "delete from favorite_list where user_favo_id = ? and user_favo_to = ? ";
+		PreparedStatement stmt =conn.prepareStatement(sql);
+		stmt.setInt(1,user_favo_id);
+		stmt.setInt(2,user_favo_to);
+		stmt.execute();
+		stmt.close();
+		conn.close();
+	}
+
+	public void take_favolist(int user_id)throws Exception {
+		this.favo_list = new ArrayList<Integer>();
+		Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Drive
+		String url="jdbc:mysql://localhost/share_class";
+		Connection conn = DriverManager.getConnection(url, "root", "yuma0101");
+		String sql = "select user_favo_to from favorite_list where user_favo_id = ?";
+		PreparedStatement stmt =conn.prepareStatement(sql);
+		stmt.setInt(1, user_id);
+		ResultSet rs = stmt.executeQuery();
+		while(rs.next()) {
+			this.favo_list.add(rs.getInt("user_favo_to"));
+		}
+		rs.close();
+		stmt.close();
+		conn.close();
+
+
+	}
+
 	public List<String> userLogin(String mail,String password)throws Exception{//ユーザログイン用のメソッド
+		int num;
+		int user_id = -1;
+		String user_name = null;
+		String user_password = null;
+		int admin = 0;
+		String user_mail = null;
 		List<String> result = new ArrayList<String>();
 		Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Drive
 		String url="jdbc:mysql://localhost/share_class";
@@ -107,5 +170,29 @@ public class UserDbaccess {
 			return result;
 		}
 
+	}
+
+	public int getNum() {
+		return num;
+	}
+
+	public int getUser_id(int i) {
+		return user_id.get(i);
+	}
+
+	public String getUser_name(int i) {
+		return user_name.get(i);
+	}
+
+	public String getUser_mail(int i) {
+		return user_mail.get(i);
+	}
+
+	public int getAdmin(int i) {
+		return admin.get(i);
+	}
+
+	public ArrayList<Integer> getFavo_list() {
+		return favo_list;
 	}
 }
