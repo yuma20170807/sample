@@ -36,7 +36,7 @@ if (login_info == null){
 				<li class='nav-item'><a class='nav-link'
 					href='view_registerLecture.jsp'>時間割登録</a></li>
 				<li class='nav-item'><a class='nav-link' href='view_allUser.jsp'>ユーザ検索</a></li>
-				<li class='nav-item'><a class='nav-link' href='/'>お気に入り</a></li>
+				<li class='nav-item'><a class='nav-link' href='view_showFavo.jsp'>お気に入り</a></li>
 				<li class='nav-item'><a class='nav-link'
 					href='process_logout.jsp'
 					onclick="return confirm('ログアウトします。よろしいですか？')">ログアウト</a></li>
@@ -90,6 +90,8 @@ if (login_info == null){
 		</ul>
 	</div>
 	<%}%>
+
+	<h3 class="text-center"><%=login_info.get(1) %>の履修科目</h3>
 	<table class="table table-bordered table-xl mt-5">
 		<thead>
 			<tr>

@@ -35,24 +35,17 @@ if (login_info == null){
 			id='navbarSupportedContent'>
 			<ul class='navbar-nav'>
 				<%if (login_info != null){%>
-				<li class='nav-item'><a class='nav-link'
-					href='view_registerLecture.jsp'>時間割登録</a></li>
-				<li class='nav-item'><a class='nav-link'
-					href='view_allUser.jsp'>ユーザ検索</a></li>
-				<li class='nav-item'><a class='nav-link' href='/'>お気に入り</a></li>
-				<li class='nav-item'><a class='nav-link'
-					href='process_logout.jsp'
-					onclick="return confirm('ログアウトします。よろしいですか？')">ログアウト</a></li>
+				<li class='nav-item'><a class='nav-link' href='view_registerLecture.jsp'>時間割登録</a></li>
+				<li class='nav-item'><a class='nav-link' href='view_allUser.jsp'>ユーザ検索</a></li>
+				<li class='nav-item'><a class='nav-link' href='view_showFavo.jsp'>お気に入り</a></li>
+				<li class='nav-item'><a class='nav-link' href='process_logout.jsp' onclick="return confirm('ログアウトします。よろしいですか？')">ログアウト</a></li>
 				<%if((Integer.parseInt(login_info.get(3))) == 1){
 							%>
-				<li class='nav-item'><a class='nav-link'
-					href='view_openLecture.jsp'>管理者限定, 開講科目登録</a></li>
+				<li class='nav-item'><a class='nav-link' href='view_openLecture.jsp'>管理者限定, 開講科目登録</a></li>
 				<% }%>
 				<% } else{%>
-				<li class='nav-item'><a class='nav-link'
-					href='view_loginUser.jsp'>ログイン</a></li>
-				<li class='nav-item'><a class='nav-link'
-					href='view_newUser.jsp'>ユーザ登録</a></li>
+				<li class='nav-item'><a class='nav-link' href='view_loginUser.jsp'>ログイン</a></li>
+				<li class='nav-item'><a class='nav-link' href='view_newUser.jsp'>ユーザ登録</a></li>
 				<%} %>
 			</ul>
 		</div>
@@ -128,7 +121,7 @@ if (login_info == null){
 					<form action="process_non_favoriteUser.jsp" method="post">
 						<input type="hidden" name="user_favo_to"
 							value="<%=user.getUser_id(i) %>"> <input type="hidden"
-							name="page" value="search">
+							name="page" value="all">
 						<button type='submit' class='btn btn-danger'>解除</button>
 					</form>
 					<%}else{
@@ -136,7 +129,7 @@ if (login_info == null){
 					<form action="process_favoriteUser.jsp" method="post">
 						<input type="hidden" name="user_favo_to"
 							value="<%=user.getUser_id(i) %>"> <input type="hidden"
-							name="page" value="search">
+							name="page" value="all">
 						<button type='submit' class='btn btn-info'>お気に入り</button>
 					</form>
 					<%} %>

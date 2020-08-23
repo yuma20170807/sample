@@ -10,8 +10,9 @@ List<String> login_info = (List<String>) session.getAttribute("login_info");
 if (login_info == null) {
 %>
 <jsp:forward page="view_loginUser.jsp" />
-<%}else{
-	user.take_favolist(Integer.parseInt(login_info.get(0)));
+<%
+	} else {
+user.take_favolist(Integer.parseInt(login_info.get(0)));
 }
 %>
 <!DOCTYPE html>
@@ -34,35 +35,19 @@ if (login_info == null) {
 		<div class='collapse navbar-collapse justify-content-end'
 			id='navbarSupportedContent'>
 			<ul class='navbar-nav'>
-				<%
-					if (login_info != null) {
-				%>
-				<li class='nav-item'><a class='nav-link'
-					href='view_registerLecture.jsp'>時間割登録</a></li>
-				<li class='nav-item'><a class='nav-link'
-					href='view_allUser.jsp'>ユーザ検索</a></li>
-				<li class='nav-item'><a class='nav-link' href='/'>お気に入り</a></li>
-				<li class='nav-item'><a class='nav-link'
-					href='process_logout.jsp'
-					onclick="return confirm('ログアウトします。よろしいですか？')">ログアウト</a></li>
-				<%
-					if ((Integer.parseInt(login_info.get(3))) == 1) {
-				%>
-				<li class='nav-item'><a class='nav-link'
-					href='view_openLecture.jsp'>管理者限定, 開講科目登録</a></li>
-				<%
-					}
-				%>
-				<%
-					} else {
-				%>
-				<li class='nav-item'><a class='nav-link'
-					href='view_loginUser.jsp'>ログイン</a></li>
-				<li class='nav-item'><a class='nav-link'
-					href='view_newUser.jsp'>ユーザ登録</a></li>
-				<%
-					}
-				%>
+				<%if (login_info != null){%>
+				<li class='nav-item'><a class='nav-link' href='view_registerLecture.jsp'>時間割登録</a></li>
+				<li class='nav-item'><a class='nav-link' href='view_allUser.jsp'>ユーザ検索</a></li>
+				<li class='nav-item'><a class='nav-link' href='view_showFavo.jsp'>お気に入り</a></li>
+				<li class='nav-item'><a class='nav-link' href='process_logout.jsp' onclick="return confirm('ログアウトします。よろしいですか？')">ログアウト</a></li>
+				<%if((Integer.parseInt(login_info.get(3))) == 1){
+							%>
+				<li class='nav-item'><a class='nav-link' href='view_openLecture.jsp'>管理者限定, 開講科目登録</a></li>
+				<% }%>
+				<% } else{%>
+				<li class='nav-item'><a class='nav-link' href='view_loginUser.jsp'>ログイン</a></li>
+				<li class='nav-item'><a class='nav-link' href='view_newUser.jsp'>ユーザ登録</a></li>
+				<%} %>
 			</ul>
 		</div>
 	</nav>
@@ -104,3 +89,69 @@ if (login_info == null) {
 	<%
 		}
 	%>
+	<table class="table table-bordered table-xl mt-5">
+		<thead class="thread-light">
+			<tr>
+				<th scope="col">名前</th>
+			</tr>
+		</thead>
+		<tbody>
+			<%
+				int num = 0;
+			for (int i = 0; i < user.getNum(); i++) {
+				if (user.getAdmin(i) != 1) {
+					if (user.getUser_id(i) != Integer.parseInt(login_info.get(0))) {
+						if (user.getFavo_list().contains(user.getUser_id(i))){
+				num++;
+			%>
+			<td>
+				<div class="row">
+					<div class="col-8">
+						<form action='view_friendTaking.jsp' method='post'>
+							<input type='hidden' name="user_id"
+								value='<%=user.getUser_id(i)%>'>
+							<div class="row">
+								<h3 class="offset-3"><%=user.getUser_name(i)%></h3>
+								<button type='submit' class='btn btn-info offset-2'>時間割閲覧</button>
+							</div>
+						</form>
+					</div>
+					<%
+						if (user.getFavo_list().contains(user.getUser_id(i))) {
+					%>
+					<form action="process_non_favoriteUser.jsp" method="post">
+						<input type="hidden" name="user_favo_to"
+							value="<%=user.getUser_id(i)%>"> <input type="hidden"
+							name="page" value="favo">
+						<button type='submit' class='btn btn-danger'>解除</button>
+					</form>
+					<%
+						} else {
+					%>
+					<form action="process_favoriteUser.jsp" method="post">
+						<input type="hidden" name="user_favo_to"
+							value="<%=user.getUser_id(i)%>"> <input type="hidden"
+							name="page" value="favo">
+						<button type='submit' class='btn btn-info'>お気に入り</button>
+					</form>
+					<%
+						}
+					%>
+				</div>
+			</td>
+			<%
+				}
+			}
+			}
+			}
+			%>
+		</tbody>
+	</table>
+	<%
+		if (num == 0) {
+	%>
+	<p class="text-center">お気に入りユーザはいません。</p>
+	<%}%>
+
+</body>
+</html>

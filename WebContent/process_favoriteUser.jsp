@@ -34,4 +34,9 @@ if (before_page.equals("search")){
 	%><jsp:forward page="view_searchUser.jsp" /><%
 }
 }
+
+if(before_page.equals("favo")){
+	%><jsp:forward page="view_showFavo.jsp" /><%
+}
 %>
+

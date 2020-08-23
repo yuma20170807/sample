@@ -32,34 +32,19 @@ if (login_info == null){
 		<div class='collapse navbar-collapse justify-content-end'
 			id='navbarSupportedContent'>
 			<ul class='navbar-nav'>
-				<%
-					if (login_info != null) {
-				%>
-				<li class='nav-item'><a class='nav-link'
-					href='view_registerLecture.jsp'>時間割登録</a></li>
+				<%if (login_info != null){%>
+				<li class='nav-item'><a class='nav-link' href='view_registerLecture.jsp'>時間割登録</a></li>
 				<li class='nav-item'><a class='nav-link' href='view_allUser.jsp'>ユーザ検索</a></li>
-				<li class='nav-item'><a class='nav-link' href='/'>お気に入り</a></li>
-				<li class='nav-item'><a class='nav-link'
-					href='process_logout.jsp'
-					onclick="return confirm('ログアウトします。よろしいですか？')">ログアウト</a></li>
-				<%
-					if ((Integer.parseInt(login_info.get(3))) == 1) {
-				%>
-				<li class='nav-item'><a class='nav-link'
-					href='view_openLecture.jsp'>管理者限定, 開講科目登録</a></li>
-				<%
-					}
-				%>
-				<%
-					} else {
-				%>
-				<li class='nav-item'><a class='nav-link'
-					href='view_loginUser.jsp'>ログイン</a></li>
-				<li class='nav-item'><a class='nav-link'
-					href='view_newUser.jsp'>ユーザ登録</a></li>
-				<%
-					}
-				%>
+				<li class='nav-item'><a class='nav-link' href='view_showFavo.jsp'>お気に入り</a></li>
+				<li class='nav-item'><a class='nav-link' href='process_logout.jsp' onclick="return confirm('ログアウトします。よろしいですか？')">ログアウト</a></li>
+				<%if((Integer.parseInt(login_info.get(3))) == 1){
+							%>
+				<li class='nav-item'><a class='nav-link' href='view_openLecture.jsp'>管理者限定, 開講科目登録</a></li>
+				<% }%>
+				<% } else{%>
+				<li class='nav-item'><a class='nav-link' href='view_loginUser.jsp'>ログイン</a></li>
+				<li class='nav-item'><a class='nav-link' href='view_newUser.jsp'>ユーザ登録</a></li>
+				<%} %>
 			</ul>
 		</div>
 	</nav>
