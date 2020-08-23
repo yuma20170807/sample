@@ -35,75 +35,75 @@ if (login_info == null) {
 			id='navbarSupportedContent'>
 			<ul class='navbar-nav'>
 				<%
-					if (login_info != null) {
-				%>
-				<li class='nav-item'><a class='nav-link'
-					href='view_registerLecture.jsp'>時間割登録</a></li>
-				<li class='nav-item'><a class='nav-link'
-					href='view_allUser.jsp'>ユーザ検索</a></li>
-				<li class='nav-item'><a class='nav-link' href='/'>お気に入り</a></li>
-				<li class='nav-item'><a class='nav-link'
-					href='process_logout.jsp'
-					onclick="return confirm('ログアウトします。よろしいですか？')">ログアウト</a></li>
-				<%
-					if ((Integer.parseInt(login_info.get(3))) == 1) {
-				%>
-				<li class='nav-item'><a class='nav-link'
-					href='view_openLecture.jsp'>管理者限定, 開講科目登録</a></li>
-				<%
-					}
-				%>
-				<%
-					} else {
-				%>
-				<li class='nav-item'><a class='nav-link'
-					href='view_loginUser.jsp'>ログイン</a></li>
-				<li class='nav-item'><a class='nav-link'
-					href='view_newUser.jsp'>ユーザ登録</a></li>
-				<%
-					}
-				%>
+				if (login_info != null) {
+			%>
+			<li class='nav-item'><a class='nav-link'
+				href='view_registerLecture.jsp'>時間割登録</a></li>
+			<li class='nav-item'><a class='nav-link'
+				href='view_allUser.jsp'>ユーザ検索</a></li>
+			<li class='nav-item'><a class='nav-link' href='/'>お気に入り</a></li>
+			<li class='nav-item'><a class='nav-link'
+				href='process_logout.jsp'
+				onclick="return confirm('ログアウトします。よろしいですか？')">ログアウト</a></li>
+			<%
+				if ((Integer.parseInt(login_info.get(3))) == 1) {
+			%>
+			<li class='nav-item'><a class='nav-link'
+				href='view_openLecture.jsp'>管理者限定, 開講科目登録</a></li>
+			<%
+				}
+			%>
+			<%
+				} else {
+			%>
+			<li class='nav-item'><a class='nav-link'
+				href='view_loginUser.jsp'>ログイン</a></li>
+			<li class='nav-item'><a class='nav-link'
+				href='view_newUser.jsp'>ユーザ登録</a></li>
+			<%
+				}
+			%>
 			</ul>
 		</div>
 	</nav>
 </header>
 <body>
 	<%
-		List<String> errors = (List<String>) session.getAttribute("error");
-	if (errors != null) {
-	%>
-	<div id="error_explanation" class="alert alert-warning mt-3">
-		<ul class="mb-0">
-			<%
-				session.removeAttribute("error");
-			if (!errors.isEmpty()) {
-				for (String error : errors) {
-			%>
-			<li><%=error%></li>
-			<%}%>
-			<%}%>
-		</ul>
-	</div>
-	<%
-		}
-	List<String> successes = (List<String>) session.getAttribute("success");
-	if (successes != null) {
-	%>
-	<div id="error_explanation" class="alert alert-success mt-3">
-		<ul class="mb-0">
-			<%
-				session.removeAttribute("success");
-			if (!successes.isEmpty()) {
-				for (String success : successes) {
-			%>
-			<li><%=success%></li>
-			<%}%>
-			<%}%>
-		</ul>
-	</div>
-	<%
-		}
-	%>
+	List<String> errors = (List<String>) session.getAttribute("error");
+if (errors != null) {
+%>
+<div id="error_explanation" class="alert alert-warning mt-3">
+	<ul class="mb-0">
+		<%
+			session.removeAttribute("error");
+		if (!errors.isEmpty()) {
+			for (String error : errors) {
+		%>
+		<li><%=error%></li>
+		<%}%>
+		<%}%>
+	</ul>
+</div>
+<%
+	}
+List<String> successes = (List<String>) session.getAttribute("success");
+if (successes != null) {
+%>
+<div id="error_explanation" class="alert alert-success mt-3">
+	<ul class="mb-0">
+		<%
+			session.removeAttribute("success");
+		if (!successes.isEmpty()) {
+			for (String success : successes) {
+		%>
+		<li><%=success%></li>
+		<%}%>
+		<%}%>
+	</ul>
+</div>
+<%
+	}
+%>
 
 	<div class='offset-sm-3 col-sm-6 mt-5 mb-5'>
 		<form action='view_searchUser.jsp' method='post'>
